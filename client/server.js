@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const compression = require('compression')
+const favicon = require('serve-favicon')
 const resolve = file => path.resolve(__dirname, file)
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -35,7 +37,10 @@ const serve = (path, cache) => express.static(resolve(path), {
   maxAge: cache && isProd ? 60 * 60 * 24 * 30 : 0
 })
 
+app.use(compression({ threshold: 0 }))
+app.use(favicon('./public/logo-48.png'))
 app.use('/dist', serve('./dist', true))
+app.use('/public', serve('./public', true))
 app.use('/service-worker.js', serve('./dist/service-worker.js'))
 
 app.get('*', (req, res) => {
@@ -59,6 +64,7 @@ app.get('*', (req, res) => {
   renderer.renderToStream({ url: req.url })
     .on('error', errorHandler)
     .on('end', () => console.log(`whole request: ${Date.now() - s}ms`))
+    .pipe(res)
 })
 
 const port = process.env.PORT || 8888

@@ -3,11 +3,10 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const store = new Vue.Store({
-  state: {
-    test: ''
-  },
-  actions: {}
+const store = new Vuex.Store({
+  state: {},
+  actions: {},
+  mutations: {}
 })
 
 export default store

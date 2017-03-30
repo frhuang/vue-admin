@@ -5,11 +5,13 @@
     <title>Vue Backend</title>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <% for (var chunk of webpack.chunks) {
-        for (var file of chunk.files) {
-          if (file.match(/\.(js|css)$/)) { %>
-    <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>"><% }}} %>
-  </head>
+    <link rel="shortcut icon" sizes="48x48" href="/public/logo-48.png">
+    <% if(htmlWebpackPlugin.options.environment === 'production') { %>
+    <% for(key in htmlWebpackPlugin.files.css){ %>
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[key] %>">
+    <% } %>
+    <% } %>
+   </head>
   <body>
     <!--vue-ssr-outlet-->
   </body>
